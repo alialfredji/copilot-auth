@@ -1,0 +1,37 @@
+{
+  "name": "copilot-llm",
+  "version": "0.1.0",
+  "description": "Use your GitHub Copilot subscription as an LLM backend. No API keys.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx index.ts",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["github-copilot", "llm", "ai", "typescript", "oauth"],
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "tsx": "^4.0.0",
+    "@types/node": "^20.0.0",
+    "@github/copilot-sdk": "^0.1.0"
+  },
+  "peerDependencies": {
+    "@github/copilot-sdk": ">=0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@github/copilot-sdk": { "optional": true }
+  }
+}
