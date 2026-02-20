@@ -49,15 +49,17 @@ export interface StoredTokens {
 }
 
 export const MODELS = {
-  // Anthropic - requires Copilot Pro+ and model enabled at github.com/settings/copilot/features
-  CLAUDE_SONNET: 'claude-sonnet-4-5',
-  CLAUDE_OPUS: 'claude-opus-4-5',
-  CLAUDE_HAIKU: 'claude-haiku-4-5',
-  // OpenAI
-  GPT_4O: 'gpt-4o',
-  GPT_41: 'gpt-4.1',
-  GPT_5: 'gpt-5',
-  // Google
-  GEMINI_15_PRO: 'gemini-1.5-pro',
-  GEMINI_20_FLASH: 'gemini-2.0-flash',
+  GPT_4O:       'gpt-4o',
+  GPT_4O_MINI:  'gpt-4o-mini',
+  GPT_41:       'gpt-4.1',
+  GPT_5:        'gpt-5-mini',
+  GPT_51:       'gpt-5.1',
+  GPT_52:       'gpt-5.2',
+
+  CLAUDE_HAIKU:  'claude-haiku-4.5',
+  CLAUDE_SONNET: 'claude-sonnet-4.5',
+  CLAUDE_OPUS:   'claude-opus-4.5',
+
+  GEMINI_25_PRO: 'gemini-2.5-pro',
+  GROK_CODE:     'grok-code-fast-1',
 } as const

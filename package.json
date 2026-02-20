@@ -1,7 +1,7 @@
 {
   "name": "copilot-llm",
   "version": "0.1.0",
-  "description": "Use your GitHub Copilot subscription as an LLM backend. No API keys.",
+  "description": "Use your GitHub Copilot subscription as an LLM backend. No API keys required. Supports GPT, Claude, Gemini, and Grok models via device-flow or gh CLI auth.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -11,27 +11,51 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsx index.ts",
+    "test": "tsx test.ts",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["github-copilot", "llm", "ai", "typescript", "oauth"],
+  "keywords": [
+    "github-copilot",
+    "copilot",
+    "llm",
+    "ai",
+    "gpt",
+    "claude",
+    "gemini",
+    "grok",
+    "openai",
+    "anthropic",
+    "typescript",
+    "oauth",
+    "device-flow",
+    "no-api-key"
+  ],
+  "author": "Ali Alfredji <alfredjiali@gmail.com>",
   "license": "MIT",
-  "engines": { "node": ">=18" },
-  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alialfredji/copilot-auth.git"
+  },
+  "homepage": "https://github.com/alialfredji/copilot-auth#readme",
+  "bugs": {
+    "url": "https://github.com/alialfredji/copilot-auth/issues"
+  },
+  "engines": {
+    "node": ">=24"
+  },
   "devDependencies": {
-    "typescript": "^5.4.0",
-    "tsx": "^4.0.0",
-    "@types/node": "^20.0.0",
-    "@github/copilot-sdk": "^0.1.0"
-  },
-  "peerDependencies": {
-    "@github/copilot-sdk": ">=0.1.0"
-  },
-  "peerDependenciesMeta": {
-    "@github/copilot-sdk": { "optional": true }
+    "@types/node": "^25.3.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

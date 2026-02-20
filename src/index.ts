@@ -52,7 +52,7 @@ export class CopilotLLM {
         ...options,
         defaultModel: this.config.model,
         defaultSystemPrompt: this.config.systemPrompt,
-      })
+      }, this.store)
     }
 
     // Approach A: refresh token if needed, then call API

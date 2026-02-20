@@ -8,15 +8,16 @@ Two auth strategies unified behind one interface, selected via a flag.
 
 ```bash
 npm install copilot-llm
-# For Approach B (optional):
-npm install @github/copilot-sdk @github/copilot
 ```
+
+No extra packages required for either approach.
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 24+
 - Active GitHub Copilot subscription (any paid tier)
-- For Claude models: enable at [github.com/settings/copilot/features](https://github.com/settings/copilot/features)
+- For Approach B: `gh` CLI installed and authenticated (`gh auth login`)
+- For Claude/Gemini/Grok models: enable at [github.com/settings/copilot/features](https://github.com/settings/copilot/features)
 
 ## Quick Start - Approach A (default, zero deps)
 
@@ -25,31 +26,28 @@ import { CopilotLLM, MODELS } from 'copilot-llm'
 
 const llm = await CopilotLLM.init({
   model: MODELS.CLAUDE_SONNET,
-  systemPrompt: 'You are a LinkedIn engagement expert. Write authentic 2-3 sentence comments.'
+  systemPrompt: 'You are a helpful assistant.'
 })
 
 // First run: shows terminal prompt to visit github.com/login/device
 // All subsequent runs: silent, uses stored token
 
-const comment = await llm.complete(
-  'Write a LinkedIn comment on this post: "AI will replace most developers by 2030"'
-)
-console.log(comment.text)
+const result = await llm.complete('Explain the CAP theorem in two sentences.')
+console.log(result.text)
 ```
 
-## Quick Start - Approach B (official SDK)
+## Quick Start - Approach B (gh CLI)
 
 ```typescript
 import { CopilotLLM, MODELS } from 'copilot-llm'
 
-// Requires: npm install @github/copilot-sdk && npm install -g @github/copilot
-// Then: gh auth login (one-time setup)
+// Requires: gh CLI installed and authenticated via `gh auth login`
 const llm = await CopilotLLM.init({
   approach: 'sdk',
   model: MODELS.GPT_41
 })
 
-const result = await llm.complete('Write a LinkedIn comment on...')
+const result = await llm.complete('Explain the CAP theorem in two sentences.')
 console.log(result.text)
 ```
 
@@ -81,7 +79,7 @@ const result = await llm.complete('Your prompt here', {
 console.log(result.text)        // The completion text
 console.log(result.model)       // Model used
 console.log(result.approach)    // 'device-flow' or 'sdk'
-console.log(result.tokensUsed)  // Total tokens (Approach A only)
+console.log(result.tokensUsed)  // Total tokens consumed (both approaches)
 ```
 
 ## Available Models
@@ -89,22 +87,27 @@ console.log(result.tokensUsed)  // Total tokens (Approach A only)
 ```typescript
 import { MODELS } from 'copilot-llm'
 
-// Anthropic - requires Copilot Pro+ and model enabled at github.com/settings/copilot/features
-MODELS.CLAUDE_SONNET   // 'claude-sonnet-4-5'
-MODELS.CLAUDE_OPUS     // 'claude-opus-4-5'
-MODELS.CLAUDE_HAIKU    // 'claude-haiku-4-5'
-
 // OpenAI
 MODELS.GPT_4O          // 'gpt-4o'
+MODELS.GPT_4O_MINI     // 'gpt-4o-mini'
 MODELS.GPT_41          // 'gpt-4.1'
-MODELS.GPT_5           // 'gpt-5'
+MODELS.GPT_5           // 'gpt-5-mini'
+MODELS.GPT_51          // 'gpt-5.1'
+MODELS.GPT_52          // 'gpt-5.2'
+
+// Anthropic - requires Copilot Pro+ and model enabled at github.com/settings/copilot/features
+MODELS.CLAUDE_HAIKU    // 'claude-haiku-4.5'
+MODELS.CLAUDE_SONNET   // 'claude-sonnet-4.5'
+MODELS.CLAUDE_OPUS     // 'claude-opus-4.5'
 
 // Google
-MODELS.GEMINI_15_PRO   // 'gemini-1.5-pro'
-MODELS.GEMINI_20_FLASH // 'gemini-2.0-flash'
+MODELS.GEMINI_25_PRO   // 'gemini-2.5-pro'
+
+// xAI
+MODELS.GROK_CODE       // 'grok-code-fast-1'
 ```
 
-> **Note:** Claude models require Copilot Pro+ and must be explicitly enabled at
+> **Note:** Claude, Gemini, and Grok models require Copilot Pro+ and must be explicitly enabled at
 > [github.com/settings/copilot/features](https://github.com/settings/copilot/features).
 
 ## Token Storage
@@ -129,12 +132,18 @@ const llm = await CopilotLLM.init({
 
 Uses the same OAuth client ID as the official VS Code Copilot extension (`Iv1.b507a08c87ecfe98`), which is public and embedded in the open-source extension.
 
-### Approach B: Official SDK
+### Approach B: gh CLI
 
-Uses `@github/copilot-sdk` which integrates with the `gh` CLI's stored credentials. Requires:
-- `@github/copilot-sdk` npm package
-- `gh` or `copilot` CLI in PATH
-- Prior authentication via `gh auth login`
+Uses the same device-flow token mechanism as Approach A, but verifies that the `gh` CLI is available in `PATH` before proceeding. This is useful when you want to ensure that the GitHub CLI environment is present as a prerequisite (e.g., in CI or dev containers where `gh` is always installed). No additional npm packages are required.
+
+**Setup:**
+
+```bash
+# Install gh CLI (one-time)
+# macOS:  brew install gh
+# Linux:  https://github.com/cli/cli#installation
+gh auth login
+```
 
 ## Error Handling
 
@@ -153,8 +162,7 @@ try {
       case 'AUTH_EXPIRED':        // Tokens are no longer valid
       case 'API_FORBIDDEN':       // No Copilot subscription or model not enabled
       case 'API_ERROR':           // Generic API failure
-      case 'SDK_NOT_INSTALLED':   // @github/copilot-sdk not installed
-      case 'SDK_CLI_NOT_FOUND':   // gh/copilot CLI not in PATH
+      case 'SDK_CLI_NOT_FOUND':   // gh CLI not in PATH (Approach B only)
     }
   }
 }
@@ -165,7 +173,7 @@ try {
 Set the `NPM_TOKEN` secret in your GitHub repository settings, then:
 
 ```bash
-git tag v0.1.0 && git push --tags
+git tag v0.2.0 && git push --tags
 ```
 
 The publish workflow triggers automatically on version tags.
