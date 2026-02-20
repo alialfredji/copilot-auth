@@ -22,7 +22,11 @@
     "dev": "tsx index.ts",
     "test": "tsx test.ts",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    "release": "npm publish --access public"
   },
   "keywords": [
     "github-copilot",

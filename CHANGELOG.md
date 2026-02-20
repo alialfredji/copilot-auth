@@ -22,5 +22,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Typed error class `CopilotLLMError` with `ErrorCode` discriminant: `AUTH_TIMEOUT`, `AUTH_DENIED`, `AUTH_EXPIRED`, `API_FORBIDDEN`, `API_ERROR`, `SDK_CLI_NOT_FOUND`
 - Full TypeScript types exported: `CopilotLLMConfig`, `CompleteOptions`, `CompletionResult`, `Approach`, `StoredTokens`
 - `.nvmrc` pinned to Node.js `v24.13.1` (LTS "Krypton")
-- GitHub Actions CI (typecheck on PR/push) and publish (npm on version tag) workflows
 - MIT license

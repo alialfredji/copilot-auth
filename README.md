@@ -170,13 +170,28 @@ try {
 
 ## Publishing
 
-Set the `NPM_TOKEN` secret in your GitHub repository settings, then:
+Requires an npm account with publish access to the `copilot-llm` package. Log in once:
 
 ```bash
-git tag v0.2.0 && git push --tags
+npm login
 ```
 
-The publish workflow triggers automatically on version tags.
+**Release workflow:**
+
+```bash
+# 1. Bump the version (updates package.json, commits, and creates a git tag)
+npm run version:patch   # 0.1.0 → 0.1.1
+npm run version:minor   # 0.1.0 → 0.2.0
+npm run version:major   # 0.1.0 → 1.0.0
+
+# 2. Build and publish to npm
+npm run release
+
+# 3. Push the version commit and tag to GitHub
+git push && git push --tags
+```
+
+`npm run release` runs `npm publish --access public`. The `prepublishOnly` hook automatically runs `npm run build` before publishing, so the `dist/` output is always fresh.
 
 ## License
 
